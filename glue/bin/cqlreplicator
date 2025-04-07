@@ -744,11 +744,11 @@ function Init {
                "--conf":"spark.files='${params[S3_LANDING_ZONE]}'/artifacts/KeyspacesConnector.conf,'${params[S3_LANDING_ZONE]}'/artifacts/CassandraConnector.conf --conf spark.serializer=org.apache.spark.serializer.KryoSerializer --conf spark.sql.extensions=com.datastax.spark.connector.CassandraSparkExtensions --conf spark.kryoserializer.buffer.max=128m --conf spark.rdd.compress=true --conf spark.cleaner.periodicGC.interval=1min --conf spark.kryo.referenceTracking=false --conf spark.cleaner.referenceTracking.cleanCheckpoints=true --conf spark.task.maxFailures=64 --conf spark.shuffle.file.buffer=1mb --conf spark.io.compression.lz4.blockSize=512kb --conf spark.sql.shuffle.partitions=200 --conf spark.default.parallelism=200 --conf spark.locality.wait=0",
                "--class":"GlueApp"
                '$enhanced_monitoring'
-           }' > /dev/null
+           }'
    fi
 
   if [[ ${params[SKIP_GLUE_CONNECTOR]} == true ]]; then
-        progress 3 5 "Creating Glue artifacts                             "
+        progress 3 5 "Creating Glue artifacts - No connector                             "
         aws glue create-job \
             --name "${params[JOB_NAME]}${params[DEFAULT_ENV]}" \
             --role "${params[GLUE_IAM_ROLE]}" \
@@ -766,7 +766,7 @@ function Init {
                 "--conf":"spark.files='${params[S3_LANDING_ZONE]}'/artifacts/KeyspacesConnector.conf,'${params[S3_LANDING_ZONE]}'/artifacts/CassandraConnector.conf --conf spark.serializer=org.apache.spark.serializer.KryoSerializer --conf spark.sql.extensions=com.datastax.spark.connector.CassandraSparkExtensions --conf spark.kryoserializer.buffer.max=128m --conf spark.rdd.compress=true --conf spark.cleaner.periodicGC.interval=1min --conf spark.kryo.referenceTracking=false --conf spark.cleaner.referenceTracking.cleanCheckpoints=true --conf spark.task.maxFailures=64 --conf spark.shuffle.file.buffer=1mb --conf spark.io.compression.lz4.blockSize=512kb --conf spark.sql.shuffle.partitions=200 --conf spark.default.parallelism=200 --conf spark.locality.wait=0",
                 "--class":"GlueApp"
                 '$enhanced_monitoring'
-                }' > /dev/null
+                }'
     fi
 
   if [[ ${params[SKIP_KEYSPACES_LEDGER]} == true ]]; then
