@@ -690,8 +690,9 @@ function Init {
   fi
 
   if [[ ${params[SKIP_GLUE_CONNECTOR]} == false ]]; then
-      progress 3 5 "Creating Glue artifacts                             "
+      progress 3 5 "Creating Glue artifacts - Create connector                             "
       glue_conn_name=$(echo cql-replicator-"$(uuidgen)" | tr ' [:upper:]' ' [:lower:]')
+      log_info "connection: $glue_conn_name"
       aws glue create-connection --connection-input '{
          "Name":"'$glue_conn_name${params[DEFAULT_ENV]}'",
          "Description":"CQLReplicator connection to the C* cluster",
@@ -726,6 +727,7 @@ function Init {
           }' --region "${params[AWS_REGION]}" --endpoint https://glue."${params[AWS_REGION]}".amazonaws.com --output json
        fi
 
+       log_info "job: ${params[JOB_NAME]}${params[DEFAULT_ENV]}"
        aws glue create-job \
            --name "${params[JOB_NAME]}${params[DEFAULT_ENV]}" \
            --role "${params[GLUE_IAM_ROLE]}" \
@@ -749,6 +751,7 @@ function Init {
 
   if [[ ${params[SKIP_GLUE_CONNECTOR]} == true ]]; then
         progress 3 5 "Creating Glue artifacts - No connector                             "
+        log_info "job: ${params[JOB_NAME]}${params[DEFAULT_ENV]}"
         aws glue create-job \
             --name "${params[JOB_NAME]}${params[DEFAULT_ENV]}" \
             --role "${params[GLUE_IAM_ROLE]}" \
